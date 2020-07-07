@@ -1,15 +1,24 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import fs, { opendir } from 'fs'
-import path from 'path'
-import vm from 'vm'
+import { v4 as uuidv4 } from 'uuid';
 
 class Dico extends Component {
   constructor(props) {
     super(props)
     this.state = {
       lang: this.props.lang,
-      words: null
+      languages: ['en', 'fr', 'dk', 'ht'],
+      words: null,
+    }
+    this.timers = {}
+  }
+
+  cleanUp = () => {
+    // previous state clean up?
+    if (this.timers.switch_lang !== undefined) {
+      clearTimeout(this.timers.switch_lang)
+      this.timers.switch_lang = undefined
     }
   }
 
@@ -17,16 +26,17 @@ class Dico extends Component {
   }
 
   get = (key, binds) => {
-    let value = key
-    let [section, subkey] = key.split('.')
-    let parts = key.split('.')
-    console.log(parts)
     if (this.state.words === null) {
       this.learn(this.state.lang)
     }
 
-    if (this.words[section] !== undefined && this.words[section][subkey] !== undefined) {
-      value = this.words[section][subkey]
+    let value = key
+    try {
+      let parts = key.split('.')
+      value = parts.reduce((total, current) => {
+        return total[current]
+      }, this.words)
+
       if (binds!==null) {
         if (Array.isArray(binds)) {
           value = this.replaceBindsArray(value, binds)
@@ -34,24 +44,51 @@ class Dico extends Component {
           value = this.replaceBindsObject(value, binds)
         }
       }
+    } catch(err) {
+      value = key
     }
 
-    return value;
+    return value
+  }
+
+  getFlagClassNames = (lang) => {
+    let flag_classnames = ['flag', 'inline-block']
+    flag_classnames.push(lang)
+    return flag_classnames.join(' ')
+  }
+
+  langOptionClick = (e, id) => {
+    try {
+      e.preventDefault();
+      const lang_options = document.getElementById('lang-options')
+      const parent = lang_options.parentElement;
+      if  (parent) {
+        const active = 'active'
+        const inactive = 'inactive'
+        const has_active = parent.className.match(/\bactive\b/g)
+        const lang_options_classes = parent.className
+          .split(' ')
+          .filter(c => c!==active && c!==inactive)
+        if (has_active) {
+          // close options
+          lang_options_classes.push(inactive)
+        } else {
+          // open options
+          lang_options_classes.push(active)
+        }
+        parent.className = lang_options_classes.join(' ')
+        // switch lang?
+        this.switchLanguage(id)
+      }
+    } catch(err) {
+      console.log(err)
+    }
   }
 
   learn = (lang) => {
     try {
-      /*
-      console.log('learning ' + lang)
-      opendir('/', (e, dir) => {
-        if (e) throw e
-        else {
-          console.log("Direction path: " + dir.path)
-        }
-      })/*
-      const data = readFileSync('./lang/' + lang + '.js')
-      console.log(data)
-      this.words = new vm.Script(data) */
+      const lang_file = require('../utility/lang/' + lang)
+      this.words = lang_file.default
     } catch(err) {
       throw err
     }
@@ -60,14 +97,34 @@ class Dico extends Component {
   }
 
   render = () => {
+    // cleanup ?
+    this.cleanUp()
+
+    const lang_options = []
+    this.state.languages.map((lang) => {
+      lang_options.push(<span
+        id={ 'switch-' + lang }
+        key={ uuidv4() }
+        className={ this.getFlagClassNames(lang) }
+        onClick={ (e) => this.langOptionClick(e, lang) }></span>
+      )
+      return lang
+    }, lang_options)
     return (
-      <div className="dico lang-switcher text-align-right" data-lang={ this.state.lang }>
-        { this.state.lang }
+      <div className="dico lang-switcher text-align-right inactive" data-lang={ this.state.lang }>
+        <FontAwesomeIcon icon={['far', 'language']} />
+        <span id="lang-options" className="flags inline-block">
+        { lang_options }
+        </span>
       </div>
     )
   }
 
   replaceBindsArray = (str, arr) => {
+    str = arr.reduce((total , current) => {
+      return total.split('?', 2).join(current)
+    }, str)
+
     return str
   }
 
@@ -76,12 +133,46 @@ class Dico extends Component {
   }
 
   setStateItem = (key, value) => {
-    let s = this.state
-    s.key = value
-    this.setState(s)
+    if (typeof(key)==='string') {
+      this.setState({
+        ...this.state,
+        key: value
+      })
+    } else if (typeof(key)==='object') {
+      this.setState({
+        ...this.state,
+        ...key
+      })
+    }
+  }
+
+  switchLanguage = (new_lang) => {
+    if (new_lang!==this.state.lang) {
+      // switch both lang and languages
+      const lang_sorted = this.state.languages.filter(lang => lang !== new_lang)
+      lang_sorted.unshift(new_lang)
+      const new_state_options = {
+        lang: new_lang,
+        languages: lang_sorted
+      }
+      if (this.timers.switch_lang === undefined) {
+        const self = this
+        this.timers.switch_lang = setTimeout(() => {
+          self.setStateItem(new_state_options)
+        }, 360)
+      } else {
+        // animation too slow?
+        clearTimeout(this.timers.switch_lang)
+        this.timers.switch_lang = undefined
+        this.setStateItem({
+          lang: new_lang,
+          languages: lang_sorted
+        })
+      }
+    }
   }
 }
-  
+
 // PropTypes
 Dico.propTypes = {
   lang: PropTypes.string.isRequired

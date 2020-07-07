@@ -1,23 +1,45 @@
 .block {
     display: block;
 }
-.cell {
-    /*
-    border: 1px solid #AAA;
-    border-left: none;
-    border-top: none;
-    min-width: 4.0em;
-    padding: 0.25em;
-    text-align: center; */
-}
 .clear-after::after {
     clear: both;
 }
 .float-left {
     float: left;
 }
+.flag {
+    background: no-repeat bottom center;
+    background-clip: padding-box;
+    background-size: cover;
+    border-radius: 0.9em;
+    margin-left: 0.30rem;
+    height: 0.95rem;
+    width: 1.40rem;
+}
+.flag.dk {
+    background-image: url('/images/flags/dk.svg');
+    background-position: top center;
+}
+.flag.en {
+    background-image: url('/images/flags/uk.svg');
+}
+.flag.fr {
+    background-image: url('/images/flags/fr.svg');
+}
+.flag.ht {
+    background-image: url('/images/flags/ht.svg');
+}
+.flags {
+    overflow: hidden;
+    height: 1.20rem;
+    transition: width 360ms linear;
+    white-space: nowrap;
+}
 .grid {
     display:grid;
+}
+.hidden {
+    display: none!important;
 }
 .inline {
     display: inline;
@@ -27,6 +49,18 @@
 }
 .inline-grid {
     display: inline-grid;
+}
+.lang-switcher.active .fa-language {
+    color: #444;
+}
+.lang-switcher.inactive .fa-language {
+    color: #AAA;
+}
+.lang-switcher.active .flags {
+    width: 6.80rem;
+}
+.lang-switcher.inactive .flags {
+    width: 1.70rem;
 }
 .line-after::after {
     content: "\a";

@@ -18,9 +18,8 @@ class Cell extends Component {
     gridItemContentStyle = (props) => {
         const line_heights = {}
         const prefixes = ['Webkit', 'ms', 'Moz', 'O'];
-        const font_size = (7/12*props.nb_rows).toFixed(2) + 'rem';
-        const line_height = props.nb_rows + 'rem'
-
+        const font_size = '2.0rem'
+        const line_height = '2.75rem'
         prefixes.map((prefix) => {
             line_heights[prefix + 'LineHeight'] = line_height
             return true
@@ -52,7 +51,7 @@ class Cell extends Component {
             >
                 <span className="inline-block" style={ this.gridItemContentStyle({
                     nb_rows: this.state.rows
-                }) }>[{ (this.state.row + 1) + ', ' + (this.state.col + 1) }]</span>
+                }) }>{ (this.state.row + 1) + ';' + (this.state.col + 1) }</span>
             </div>
         )
     }

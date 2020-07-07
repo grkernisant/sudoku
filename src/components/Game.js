@@ -5,6 +5,8 @@ import Grid from './Grid'
 class Game extends Component {
     constructor(props) {
         super(props)
+
+        console.log('constructing Game')
         this.state = {
             settings: {
                 chars: this.props.settings.chars,

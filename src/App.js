@@ -1,3 +1,5 @@
+import { library, dom } from '@fortawesome/fontawesome-svg-core'
+import { faLanguage } from '@fortawesome/pro-regular-svg-icons'
 import React, { Component } from 'react'
 import Dico from './components/Dico'
 import Game from './components/Game'
@@ -7,17 +9,22 @@ import './reset.css'
 import './App.css'
 import './Sudoku.css'
 
+// font awesome
+library.add( faLanguage )
+dom.watch()
 
 class App extends Component {
   constructor(props) {
     super(props);
+
+    console.log('constructing App')
 
     const nb_cols = 3
     const nb_rows = 3
     const nb_chars = nb_rows * nb_cols
     const dictionary =  new Dico({lang: 'en'})
     this.state = {
-      charsetType: Charset.NUMERIC,
+      charsetType: Charset.setType(Charset.NUMERIC),
       dico: dictionary,
       lang: 'en',
       settings: {

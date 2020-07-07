@@ -5,7 +5,6 @@ class Cell extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            clearAfter: this.props.clearAfter,
             col: Number(this.props.col),
             cols: Number(this.props.cols),
             chars: this.props.chars,
@@ -16,28 +15,51 @@ class Cell extends Component {
         }
     }
 
+    gridItemContentStyle = (props) => {
+        const line_heights = {}
+        const prefixes = ['Webkit', 'ms', 'Moz', 'O'];
+        const font_size = (7/12*props.nb_rows).toFixed(2) + 'rem';
+        const line_height = props.nb_rows + 'rem'
+
+        prefixes.map((prefix) => {
+            line_heights[prefix + 'LineHeight'] = line_height
+            return true
+        }, line_heights, line_height)
+        const element_style = {
+            ...line_heights,
+            fontSize: font_size,
+            lineHeight: line_height
+        }
+
+        return (element_style)
+    }
+
     render = () => {
-        const classNames = ['cell inline-block']
-        if (this.state.clearAfter) {
-            classNames.push('line-break-after');
+        const class_names = ['cell grid-item sudoku-grid-item inner-borders']
+        if  (((this.state.row + 1) % this.state.rows) === 0) {
+            class_names.push('inner-borders-grid-bottom')
+        }
+        if  (((this.state.col + 1) % this.state.cols) === 0) {
+            class_names.push('inner-borders-grid-right')
         }
         return (
-            <li
-            className={ classNames.join(' ') }
+            <div
+            className={ class_names.join(' ') }
             data-col={ this.state.col }
             data-gridcol={ this.state.gridcol }
             data-gridrow={ this.state.gridrow }
             data-row={ this.state.row }
             >
-                <span className="inline-block">[{ (this.state.row + 1) + ', ' + (this.state.col + 1) }]</span>
-            </li>
+                <span className="inline-block" style={ this.gridItemContentStyle({
+                    nb_rows: this.state.rows
+                }) }>[{ (this.state.row + 1) + ', ' + (this.state.col + 1) }]</span>
+            </div>
         )
     }
 }
 
 // PropTypes
 Cell.propTypes = {
-    clearAfter: PropTypes.bool.isRequired,
     chars: PropTypes.array.isRequired,
     col: PropTypes.number.isRequired,
     cols: PropTypes.number.isRequired,

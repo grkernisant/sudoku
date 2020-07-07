@@ -7,7 +7,6 @@ class Section extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      clearAfter: this.props.clearAfter,
       cols: Number(this.props.cols),
       chars: this.props.chars,
       gridcol: Number(this.props.gridcol),
@@ -19,6 +18,15 @@ class Section extends Component {
   componentDidMount = () => {
   }
 
+  style = (props) => {
+    const grid_template_columns = `repeat(${ props.nb_cols }, minmax(min(3rem, 100%), 1fr))`
+    const grid_template_rows = `repeat(${ props.nb_rows }, 3rem)`
+    return ({
+        gridTemplateColumns: grid_template_columns,
+        gridTemplateRows: grid_template_rows
+    })
+  }
+
   render = () => {
     const cells = [];
     for (let r = 0; r < this.state.rows; r++) {
@@ -26,10 +34,8 @@ class Section extends Component {
         let uuid = uuidv4()
         let row = this.state.gridrow * this.state.rows + r
         let col = this.state.gridcol * this.state.cols + c
-        let clearAfter = c === this.state.cols-1
         cells.push(<Cell
           key={ uuid }
-          clearAfter={ clearAfter }
           chars={ this.state.chars }
           col={ col }
           cols={ this.state.cols }
@@ -40,25 +46,25 @@ class Section extends Component {
       }
     }
 
-    const classNames = ['section inline-block'];
-    if (this.state.clearAfter) {
-      classNames.push('line-break-after');
-    }
+    const classNames = ['section inline-grid outer-borders'];
 
     return (
-        <ul
-        className={ classNames.join(' ') }
-        data-gridrow={ this.state.gridrow }
-        data-gridcol={ this.state.gridcol }>
+        <div
+          className={ classNames.join(' ') }
+          data-gridrow={ this.state.gridrow }
+          data-gridcol={ this.state.gridcol }
+          style={ this.style({
+            nb_cols: this.state.cols,
+            nb_rows: this.state.rows
+          }) }>
             { cells }
-        </ul>
+        </div>
     )
   }
 }
 
 // PropTypes
 Section.propTypes = {
-  clearAfter: PropTypes.bool.isRequired,
   chars: PropTypes.array.isRequired,
   cols: PropTypes.number.isRequired,
   gridcol: PropTypes.number.isRequired,

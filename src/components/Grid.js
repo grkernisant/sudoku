@@ -13,6 +13,13 @@ class Grid extends Component {
         }
     }
 
+    style = (props) => {
+        const grid_template_columns = `repeat(${ props.nb_cols }, 1fr)`
+        return ({
+            gridTemplateColumns: grid_template_columns
+        })
+    }
+
     render = () => {
         const sections = [];
         for (let r = 0; r < this.state.rows; r++) {
@@ -31,7 +38,10 @@ class Grid extends Component {
         }
 
         return (
-            <div className="grid">
+            <div className="grid sudoku-grid" style={ this.style({
+                nb_cols: this.state.cols,
+                nb_rows: this.state.rows
+            }) }>
                 { sections }
             </div>
         )

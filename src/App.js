@@ -1,4 +1,3 @@
-import jQuery from 'jquery'
 import React, { Component } from 'react'
 import Dico from './components/Dico'
 import Game from './components/Game'
@@ -12,35 +11,24 @@ import './Sudoku.css'
 class App extends Component {
   constructor(props) {
     super(props);
+
+    const nb_cols = 3
+    const nb_rows = 3
+    const nb_chars = nb_rows * nb_cols
+    const dictionary =  new Dico({lang: 'en'})
     this.state = {
       charsetType: Charset.NUMERIC,
-      dico: Dico,
+      dico: dictionary,
       lang: 'en',
       settings: {
-        cols: 3,
-        rows: 3,
-        chars: Charset.get(Dico, 4)
+        cols: nb_cols,
+        rows: nb_rows,
+        chars: Charset.get(nb_chars, dictionary)
       }
     }
   }
   
   componentDidMount = () => {
-    jQuery('.cell.line-break-after').after('<li class="block"></li>')
-    jQuery('.section.line-break-after').after('<div class="block"></div>')
-
-    let cols = this.state.settings.cols
-    let rows = this.state.settings.rows
-    jQuery('.section[data-gridcol="' + (cols - 1) + '"]').addClass('outerborder-right')
-    jQuery('.section[data-gridrow="' + (rows - 1) + '"]').addClass('outerborder-bottom')
-
-    let col_max = Math.pow(cols, 2) - 1
-    let row_bot = Math.pow(rows, 2) - 1
-    for (let c = cols-1; c <= col_max; c+= cols) {
-      jQuery('.cell[data-col="' + c + '"]').addClass('bordercollapse-right')
-    }
-    for (let r = rows-1; r <= row_bot; r+= rows) {
-      jQuery('.cell[data-row="' + r + '"]').addClass('bordercollapse-bottom')
-    }
   }
 
   render = () => {

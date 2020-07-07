@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import { readFileSync } from 'fs'
+import fs, { opendir } from 'fs'
+import path from 'path'
 import vm from 'vm'
 
 class Dico extends Component {
@@ -18,6 +19,8 @@ class Dico extends Component {
   get = (key, binds) => {
     let value = key
     let [section, subkey] = key.split('.')
+    let parts = key.split('.')
+    console.log(parts)
     if (this.state.words === null) {
       this.learn(this.state.lang)
     }
@@ -38,9 +41,17 @@ class Dico extends Component {
 
   learn = (lang) => {
     try {
+      /*
+      console.log('learning ' + lang)
+      opendir('/', (e, dir) => {
+        if (e) throw e
+        else {
+          console.log("Direction path: " + dir.path)
+        }
+      })/*
       const data = readFileSync('./lang/' + lang + '.js')
       console.log(data)
-      // this.words = new vm.Script(data)
+      this.words = new vm.Script(data) */
     } catch(err) {
       throw err
     }
@@ -75,5 +86,7 @@ class Dico extends Component {
 Dico.propTypes = {
   lang: PropTypes.string.isRequired
 }
-  
+
+Dico.prototype.getValue = Dico.get
+
 export default Dico

@@ -1,32 +1,23 @@
 .block {
     display: block;
 }
-.bordercollapse-bottom {
-    border-bottom: none!important;
-}
-.bordercollapse-left {
-    border-left: none!important;
-}
-.bordercollapse-right {
-    border-right: none!important;
-}
-.bordercollapse-top {
-    border-top: none!important;
-}
 .cell {
+    /*
     border: 1px solid #AAA;
     border-left: none;
     border-top: none;
     min-width: 4.0em;
     padding: 0.25em;
-    text-align: center;
+    text-align: center; */
 }
 .clear-after::after {
     clear: both;
-    display: block;
 }
 .float-left {
     float: left;
+}
+.grid {
+    display:grid;
 }
 .inline {
     display: inline;
@@ -34,29 +25,43 @@
 .inline-block {
     display: inline-block;
 }
+.inline-grid {
+    display: inline-grid;
+}
 .line-after::after {
     content: "\a";
     white-space: pre;
 }
-.outerborder-bottom {
-    border-bottom: 3px solid black!important;
-}
-.outerborder-left {
-    border-left: 3px solid black!important;
-}
-.outerborder-right {
-    border-right: 3px solid black!important;
-}
-.outerborder-top {
-    border-top: 3px solid black!important;
-}
 .position-relative {
     position: relative;
 }
-.section {
-    border: 3px solid black;
-    border-bottom: none;
-    border-right: none;
+.sudoku-grid {
+    box-sizing: content-box;
+}
+.sudoku .grid-item {
+    text-align: center;
+    align-self: stretch;
+}
+.sudoku-grid .inner-borders {
+    border: 1px solid #AAA;
+    border-top-width: 0;
+    border-left-width: 0;
+}
+.sudoku-grid .inner-borders-grid-bottom {
+    border-bottom-width: 0;
+}
+.sudoku-grid .inner-borders-grid-left {
+    border-left-width: 0;
+}
+.sudoku-grid .inner-borders-grid-right {
+    border-right-width: 0;
+}
+.sudoku-grid .inner-borders-grid-top {
+    border-top-width: 0;
+}
+.sudoku-grid .outer-borders {
+    border: 2px solid black;
+    margin: 0 -2px -2px 0;
 }
 .text-align-right {
     text-align: right;

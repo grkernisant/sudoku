@@ -5,8 +5,8 @@ let values = []
 let type = NUMERIC
 
 const Charset = {
-    get: (rosetta, nb_chars) => {
-        console.log(nb_chars)
+    get: (nb_chars, rosetta) => {
+        // console.log(rosetta.get('ERRORS.MAX_CHARS_LIMIT'))
         values = []
         switch(type) {
             case ALPHANUM:

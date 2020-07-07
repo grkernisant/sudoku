@@ -6,9 +6,10 @@ import { v4 as uuidv4 } from 'uuid';
 class Dico extends Component {
   constructor(props) {
     super(props)
+
     this.state = {
       lang: this.props.lang,
-      languages: ['en', 'fr', 'dk', 'ht'],
+      languages: this.props.languages,
       words: null,
     }
     this.timers = {}
@@ -23,6 +24,28 @@ class Dico extends Component {
   }
 
   componentDidMount = () => {
+    const hello_world = {
+      'en': {
+        'hello': 'Hello',
+        'world': 'World'
+      },
+      'fr': {
+        'hello': 'Bonjour',
+        'world': 'Monde'
+      },
+      'dk': {
+        'hello': 'Hej',
+        'world': 'Verden'
+      },
+      'ht': {
+        'hello': 'Bonjou',
+        'world': 'Latè'
+      }
+    }
+    for (let lang in hello_world) {
+      this.learn(lang)
+      console.log(this.get('HELLO_WORLD', hello_world[lang]))
+    }
   }
 
   get = (key, binds) => {
@@ -129,6 +152,14 @@ class Dico extends Component {
   }
 
   replaceBindsObject = (str, obj) => {
+    for (let key in obj) {
+      let bind = `:${key}:`
+      if (str.indexOf(bind)!==-1) {
+        str = str.replace(bind, obj[key])
+      }
+
+    }
+
     return str
   }
 
@@ -175,7 +206,8 @@ class Dico extends Component {
 
 // PropTypes
 Dico.propTypes = {
-  lang: PropTypes.string.isRequired
+  lang: PropTypes.string.isRequired,
+  languages: PropTypes.array.isRequired
 }
 
 Dico.prototype.getValue = Dico.get

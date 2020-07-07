@@ -11,8 +11,13 @@ const Charset = {
         switch(type) {
             case Charset.ALPHANUM:
                 if  (nb_chars>62) {
-                    throw(rosetta.get('ERRORS.MAX_CHARS_LIMIT', [62]));
+                    let error = 'ERRORS.MAX_CHARS_LIMIT'
+                    if  (rosetta) {
+                        error = rosetta.get(error, [62])
+                    }
+                    throw(error);
                 }
+
                 const nb_digits = Math.min(9, nb_chars)
                 let v = 1
                 do {

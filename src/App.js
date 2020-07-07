@@ -22,15 +22,13 @@ class App extends Component {
     const nb_cols = 3
     const nb_rows = 3
     const nb_chars = nb_rows * nb_cols
-    const dictionary =  new Dico({lang: 'en'})
     this.state = {
       charsetType: Charset.setType(Charset.NUMERIC),
-      dico: dictionary,
       lang: 'en',
       settings: {
         cols: nb_cols,
         rows: nb_rows,
-        chars: Charset.get(nb_chars, dictionary)
+        chars: Charset.get(nb_chars)
       }
     }
   }
@@ -41,7 +39,7 @@ class App extends Component {
   render = () => {
     return (
       <div className="app">
-        <Dico lang={ this.state.lang } />
+        <Dico lang={ this.state.lang } languages={ ['en', 'fr', 'dk', 'ht'] } />
         <Game settings={ this.state.settings } />
       </div>
     )

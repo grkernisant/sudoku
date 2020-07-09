@@ -1,6 +1,19 @@
 .block {
     display: block;
 }
+.cell .coordinates {
+    bottom: 0.1em;
+    color: #CCC;
+    font-size: 0.6rem;
+    left: 0.25em;
+    line-height: 0.8rem;
+}
+.cell .coordinates::after {
+    content: attr(data-x) ']';
+}
+.cell .coordinates::before {
+    content: '[' attr(data-y) ',';
+}
 .clear-after::after {
     clear: both;
 }
@@ -68,6 +81,9 @@
 }
 .position-relative {
     position: relative;
+}
+.position-absolute {
+    position: absolute;
 }
 .sudoku-grid {
     box-sizing: content-box;

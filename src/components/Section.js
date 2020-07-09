@@ -28,17 +28,22 @@ class Section extends Component {
   }
 
   render = () => {
+    const gc = this.state.gridcol
+    const gr = this.state.gridrow
+    const section_name = `section-${gr}-${gc}`
     const cells = [];
     for (let r = 0; r < this.state.rows; r++) {
         for (let c = 0; c < this.state.cols; c++) {
-        let uuid = uuidv4()
+        let uuid = `${section_name}-cell-${r}-${c}`
         let row = this.state.gridrow * this.state.rows + r
         let col = this.state.gridcol * this.state.cols + c
         cells.push(<Cell
           key={ uuid }
+          id={ uuid }
           chars={ this.state.chars }
           col={ col }
           cols={ this.state.cols }
+          section={ section_name }
           gridcol={ this.state.gridcol }
           gridrow={ this.state.gridrow }
           row={ row }
@@ -50,6 +55,7 @@ class Section extends Component {
 
     return (
         <div
+          id={ this.props.id }
           className={ classNames.join(' ') }
           data-gridrow={ this.state.gridrow }
           data-gridcol={ this.state.gridcol }
@@ -65,6 +71,7 @@ class Section extends Component {
 
 // PropTypes
 Section.propTypes = {
+  id: PropTypes.string.isRequired,
   chars: PropTypes.array.isRequired,
   cols: PropTypes.number.isRequired,
   gridcol: PropTypes.number.isRequired,

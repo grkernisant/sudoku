@@ -27,14 +27,16 @@ class Cell extends Component {
         const element_style = {
             ...line_heights,
             fontSize: font_size,
-            lineHeight: line_height
+            height: '100%',
+            lineHeight: line_height,
+            width: '100%'
         }
 
         return (element_style)
     }
 
     render = () => {
-        const class_names = ['cell grid-item sudoku-grid-item inner-borders']
+        const class_names = ['cell grid-item sudoku-grid-item position-relative inner-borders']
         if  (((this.state.row + 1) % this.state.rows) === 0) {
             class_names.push('inner-borders-grid-bottom')
         }
@@ -43,15 +45,21 @@ class Cell extends Component {
         }
         return (
             <div
+            id={ this.props.id }
             className={ class_names.join(' ') }
             data-col={ this.state.col }
             data-gridcol={ this.state.gridcol }
             data-gridrow={ this.state.gridrow }
             data-row={ this.state.row }
+            data-section={ this.props.section }
             >
-                <span className="inline-block" style={ this.gridItemContentStyle({
+                <span className="position-relative inline-block" style={ this.gridItemContentStyle({
                     nb_rows: this.state.rows
-                }) }>{ (this.state.row + 1) + ';' + (this.state.col + 1) }</span>
+                }) }>
+                    <span className="position-absolute coordinates"
+                    data-y={ this.state.row + 1 }
+                    data-x={ this.state.col + 1 }></span>
+                </span>
             </div>
         )
     }
@@ -59,13 +67,15 @@ class Cell extends Component {
 
 // PropTypes
 Cell.propTypes = {
+    id: PropTypes.string.isRequired,
     chars: PropTypes.array.isRequired,
     col: PropTypes.number.isRequired,
     cols: PropTypes.number.isRequired,
     gridcol: PropTypes.number.isRequired,
     gridrow: PropTypes.number.isRequired,
     row: PropTypes.number.isRequired,
-    rows: PropTypes.number.isRequired
+    rows: PropTypes.number.isRequired,
+    section: PropTypes.string.isRequired
 }
 
 export default Cell

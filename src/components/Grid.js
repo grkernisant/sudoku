@@ -10,6 +10,9 @@ class Grid extends Component {
             rows: Number(this.props.rows),
             chars: this.props.chars
         }
+
+        this.solution = Array(this.props.rows).fill(Array(this.props.cols).fill(0))
+        console.log(this.solution)
     }
 
     style = (props) => {

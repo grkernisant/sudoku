@@ -1,6 +1,7 @@
 import { library, dom } from '@fortawesome/fontawesome-svg-core'
 import { faLanguage } from '@fortawesome/pro-regular-svg-icons'
 import React, { Component } from 'react'
+import { v4 as uuidv4 } from 'uuid';
 import Dico from './components/Dico'
 import Game from './components/Game'
 import Charset from './utility/Charset'
@@ -40,7 +41,7 @@ class App extends Component {
     return (
       <div className="app">
         <Dico lang={ this.state.lang } languages={ ['en', 'fr', 'dk', 'ht'] } />
-        <Game settings={ this.state.settings } />
+        <Game name={ uuidv4() } settings={ this.state.settings } />
       </div>
     )
   }

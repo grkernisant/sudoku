@@ -30,6 +30,7 @@ class Game extends Component {
 
 // PropTypes
 Game.propTypes = {
+    name: PropTypes.string.isRequired,
     settings: PropTypes.object.isRequired
 }
 

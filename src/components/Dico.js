@@ -119,6 +119,12 @@ class Dico extends Component {
     return lang
   }
 
+  openLanguageOptionsPane = (e) => {
+    e.preventDefault()
+    const lang_id = `switch-${ this.state.lang }`
+    document.getElementById(lang_id).click()
+  }
+
   render = () => {
     // cleanup ?
     this.cleanUp()
@@ -135,7 +141,7 @@ class Dico extends Component {
     }, lang_options)
     return (
       <div className="dico lang-switcher text-align-right inactive" data-lang={ this.state.lang }>
-        <FontAwesomeIcon icon={['far', 'language']} />
+        <FontAwesomeIcon icon={['far', 'language']} onClick={ (e) => this.openLanguageOptionsPane(e) }/>
         <span id="lang-options" className="flags inline-block">
         { lang_options }
         </span>

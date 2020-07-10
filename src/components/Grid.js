@@ -11,8 +11,18 @@ class Grid extends Component {
             chars: this.props.chars
         }
 
+        this.solution_generated = false
         this.solution = Array(this.props.rows).fill(Array(this.props.cols).fill(0))
-        console.log(this.solution)
+    }
+
+    componentDidMount = () => {
+        if (!this.solution_generated) {
+            this.generateSolution()
+        }
+    }
+
+    generateSolution = () => {
+
     }
 
     style = (props) => {
@@ -27,7 +37,6 @@ class Grid extends Component {
         for (let r = 0; r < this.state.rows; r++) {
             for (let c = 0; c < this.state.cols; c++) {
                 let uuid = `section-${r}-${c}`
-                let clearAfter = c === this.state.cols-1
                 sections.push(<Section
                     key={ uuid }
                     id={ uuid }
@@ -35,8 +44,7 @@ class Grid extends Component {
                     cols={ this.state.cols }
                     gridrow={r}
                     gridcol={c}
-                    chars={ this.state.chars }
-                    clearAfter={clearAfter} />);
+                    chars={ this.state.chars } />);
             }
         }
 

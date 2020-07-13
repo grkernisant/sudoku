@@ -9,7 +9,7 @@ class Game extends Component {
         console.log('constructing Game')
         this.state = {
             settings: {
-                chars: this.props.settings.chars,
+                charset: this.props.settings.charset,
                 cols: this.props.settings.cols,
                 rows: this.props.settings.rows
             }
@@ -22,7 +22,7 @@ class Game extends Component {
                 <Grid
                 rows={ this.state.settings.rows }
                 cols={ this.state.settings.cols }
-                chars={ this.state.settings.chars } />
+                charset={ this.state.settings.charset } />
             </div>
         )
     }

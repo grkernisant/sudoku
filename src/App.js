@@ -29,7 +29,7 @@ class App extends Component {
       settings: {
         cols: nb_cols,
         rows: nb_rows,
-        chars: Charset.get(nb_chars)
+        charset: Charset.get(nb_chars)
       }
     }
   }

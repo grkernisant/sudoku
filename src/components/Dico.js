@@ -3,16 +3,23 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { v4 as uuidv4 } from 'uuid';
 
+let instance = null
 class Dico extends Component {
   constructor(props) {
-    super(props)
+    if (instance === null) {
+      super(props)
 
-    this.state = {
-      lang: this.props.lang,
-      languages: this.props.languages,
-      words: null,
+      this.state = {
+        lang: this.props.lang,
+        languages: this.props.languages,
+        words: null,
+      }
+      this.timers = {}
+
+      instance = this
     }
-    this.timers = {}
+
+    return instance
   }
 
   cleanUp = () => {
@@ -24,60 +31,16 @@ class Dico extends Component {
   }
 
   componentDidMount = () => {
-    const hello_world = {
-      'en': {
-        'hello': 'Hello',
-        'world': 'World'
-      },
-      'fr': {
-        'hello': 'Bonjour',
-        'world': 'Monde'
-      },
-      'dk': {
-        'hello': 'Hej',
-        'world': 'Verden'
-      },
-      'ht': {
-        'hello': 'Bonjou',
-        'world': 'Latè'
-      }
-    }
-    for (let lang in hello_world) {
-      this.learn(lang)
-      console.log(this.get('HELLO_WORLD', hello_world[lang]))
-    }
-  }
-
-  get = (key, binds) => {
-    if (this.state.words === null) {
-      this.learn(this.state.lang)
-    }
-
-    let value = key
-    try {
-      let parts = key.split('.')
-      value = parts.reduce((total, current) => {
-        return total[current]
-      }, this.words)
-
-      if (binds!==null) {
-        if (Array.isArray(binds)) {
-          value = this.replaceBindsArray(value, binds)
-        } else if (typeof(binds) === 'object') {
-          value = this.replaceBindsObject(value, binds)
-        }
-      }
-    } catch(err) {
-      value = key
-    }
-
-    return value
   }
 
   getFlagClassNames = (lang) => {
     let flag_classnames = ['flag', 'inline-block']
     flag_classnames.push(lang)
     return flag_classnames.join(' ')
+  }
+
+  static googleAssistant = () => {
+    return instance
   }
 
   langOptionClick = (e, id) => {
@@ -208,6 +171,32 @@ class Dico extends Component {
       }
     }
   }
+
+  translate = (key, binds) => {
+    if (this.state.words === null) {
+      this.learn(this.state.lang)
+    }
+  
+    let value = key
+    try {
+      let parts = key.split('.')
+      value = parts.reduce((total, current) => {
+        return total[current]
+      }, this.words)
+  
+      if (binds!==null) {
+        if (Array.isArray(binds)) {
+          value = this.replaceBindsArray(value, binds)
+        } else if (typeof(binds) === 'object') {
+          value = this.replaceBindsObject(value, binds)
+        }
+      }
+    } catch(err) {
+      value = key
+    }
+  
+    return value
+  }
 }
 
 // PropTypes
@@ -215,7 +204,5 @@ Dico.propTypes = {
   lang: PropTypes.string.isRequired,
   languages: PropTypes.array.isRequired
 }
-
-Dico.prototype.getValue = Dico.get
 
 export default Dico

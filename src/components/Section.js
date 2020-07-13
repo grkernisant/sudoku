@@ -7,7 +7,7 @@ class Section extends Component {
     super(props)
     this.state = {
       cols: Number(this.props.cols),
-      chars: this.props.chars,
+      charset: this.props.charset,
       gridcol: Number(this.props.gridcol),
       gridrow: Number(this.props.gridrow),
       rows: Number(this.props.rows)
@@ -39,7 +39,7 @@ class Section extends Component {
         cells.push(<Cell
           key={ uuid }
           id={ uuid }
-          chars={ this.state.chars }
+          charset={ this.state.charset }
           col={ col }
           cols={ this.state.cols }
           section={ section_name }
@@ -71,7 +71,7 @@ class Section extends Component {
 // PropTypes
 Section.propTypes = {
   id: PropTypes.string.isRequired,
-  chars: PropTypes.array.isRequired,
+  charset: PropTypes.array.isRequired,
   cols: PropTypes.number.isRequired,
   gridcol: PropTypes.number.isRequired,
   gridrow: PropTypes.number.isRequired,

@@ -7,7 +7,7 @@ class Cell extends Component {
         this.state = {
             col: Number(this.props.col),
             cols: Number(this.props.cols),
-            chars: this.props.chars,
+            charset: this.props.charset,
             gridcol: Number(this.props.gridcol),
             gridrow: Number(this.props.gridrow),
             row: Number(this.props.row),
@@ -56,6 +56,10 @@ class Cell extends Component {
                 <span className="position-relative inline-block" style={ this.gridItemContentStyle({
                     nb_rows: this.state.rows
                 }) }>
+                    <span id={ `cell_${this.state.row}_${this.state.col}` }></span>
+                    <span
+                    id={ `possibles_${this.state.row}_${this.state.col}` }
+                    className="position-absolute possibles"></span>
                     <span className="position-absolute coordinates"
                     data-y={ this.state.row + 1 }
                     data-x={ this.state.col + 1 }></span>
@@ -68,7 +72,7 @@ class Cell extends Component {
 // PropTypes
 Cell.propTypes = {
     id: PropTypes.string.isRequired,
-    chars: PropTypes.array.isRequired,
+    charset: PropTypes.array.isRequired,
     col: PropTypes.number.isRequired,
     cols: PropTypes.number.isRequired,
     gridcol: PropTypes.number.isRequired,

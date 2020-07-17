@@ -22,9 +22,9 @@ class App extends Component {
 
     const nb_cols = 3
     const nb_rows = 3
-    const nb_chars = nb_rows * nb_cols
+    const nb_chars = Math.pow(Math.max(nb_rows, nb_cols), 2)
     this.state = {
-      charsetType: Charset.setType(Charset.NUMERIC),
+      charsetType: Charset.setType(Charset.ALPHANUM),
       lang: 'en',
       settings: {
         cols: nb_cols,
